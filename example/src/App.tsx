@@ -1,18 +1,35 @@
-import * as React from 'react';
-
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-clear-cache';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, Button, Alert } from 'react-native';
+import { getAppCacheSize, clearAppCache } from 'react-native-clear-cache';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
+  const [cacheSize, setCacheSize] = useState<number>(0);
 
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
+  const _handleGetAppCache = async () => {
+    const appCache: any = await getAppCacheSize().catch((error) => {
+      console.log('getAppCacheSize ERROR : ', error);
+      throw error;
+    });
+    console.log('appCache : ', appCache);
+    setCacheSize(appCache);
+  };
+
+  const _handleClearAppCache = async () => {
+    await clearAppCache().catch((error) => {
+      console.log('clearAppCache ERROR : ', error);
+      throw error;
+    });
+    Alert.alert('Clear Cache', 'Successfully', [
+      { text: 'OK', onPress: () => {} },
+    ]);
+  };
 
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <Text>{'Example of\nreact-native-clear-cache\n\n'}</Text>
+      <Text>{`App Cache Size : ${cacheSize}\n\n`}</Text>
+      <Button title={'App Cache Size'} onPress={_handleGetAppCache} />
+      <Button title={'Clear Cache Size'} onPress={_handleClearAppCache} />
     </View>
   );
 }
@@ -20,12 +37,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
-  },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
+    alignItems: 'center',
+    backgroundColor: 'cyan',
   },
 });

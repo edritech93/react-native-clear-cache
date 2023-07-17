@@ -21,8 +21,6 @@ export function getAppCacheSize(): Promise<number> {
   return ClearCache.getAppCacheSize();
 }
 
-export function clearAppCache(): Promise<number> {
+export function clearAppCache(): Promise<boolean> {
   return ClearCache.clearAppCache();
 }
-
-
