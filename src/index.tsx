@@ -17,6 +17,12 @@ const ClearCache = NativeModules.ClearCache
       }
     );
 
-export function multiply(a: number, b: number): Promise<number> {
-  return ClearCache.multiply(a, b);
+export function getAppCacheSize(): Promise<number> {
+  return ClearCache.getAppCacheSize();
 }
+
+export function clearAppCache(): Promise<number> {
+  return ClearCache.clearAppCache();
+}
+
+
