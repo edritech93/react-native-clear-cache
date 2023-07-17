@@ -4,9 +4,14 @@ class ClearCache: NSObject {
     @objc(getAppCacheSize:withRejecter:)
     func getAppCacheSize(resolve:RCTPromiseResolveBlock,reject:RCTPromiseRejectBlock) -> Void {
         let cachPath: String = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true)[0]
-        resolve(1)
+        let attrs = try? FileManager().attributesOfItem(atPath: cachPath)
+        if (attrs != nil) {
+            resolve(attrs?[.size] ?? 0)
+        } else {
+            resolve(0)
+        }
     }
-
+    
     @objc(clearAppCache:withRejecter:)
     func clearAppCache(resolve:RCTPromiseResolveBlock,reject:RCTPromiseRejectBlock) -> Void {
         let cachPath: String = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true)[0]
@@ -18,7 +23,9 @@ class ClearCache: NSObject {
                     try? FileManager().removeItem(atPath: path)
                 }
             }
+            resolve(true)
+        } else {
+            reject("error", "files is nil", false as? Error)
         }
-        resolve(true)
     }
 }

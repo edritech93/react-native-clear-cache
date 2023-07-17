@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Button, Alert } from 'react-native';
 import { getAppCacheSize, clearAppCache } from 'react-native-clear-cache';
 
 export default function App() {
   const [cacheSize, setCacheSize] = useState<number>(0);
 
+  useEffect(() => {
+    _handleGetAppCache();
+  }, []);
+
   const _handleGetAppCache = async () => {
     const appCache: any = await getAppCacheSize().catch((error) => {
       console.log('getAppCacheSize ERROR : ', error);
       throw error;
     });
-    console.log('appCache : ', appCache);
     setCacheSize(appCache);
   };
 
@@ -19,6 +22,7 @@ export default function App() {
       console.log('clearAppCache ERROR : ', error);
       throw error;
     });
+    _handleGetAppCache();
     Alert.alert('Clear Cache', 'Successfully', [
       { text: 'OK', onPress: () => {} },
     ]);
