@@ -1,6 +1,6 @@
 {
   "name": "react-native-clear-cache",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "bridge clear cache for react-native",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
